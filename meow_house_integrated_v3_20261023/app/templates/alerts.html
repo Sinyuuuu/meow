@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}異常提醒{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">ACTIVITY CHECKS</span><h1>異常提醒</h1><p>以簡單規則找出值得照護人員確認的活動狀況。</p></div><button class="secondary-button" id="refresh-rules">重新檢查規則</button></section>
+<section class="two-column-page alerts-layout">
+  <article class="card alert-list-card"><div class="card-heading"><div><span class="section-icon lavender">♢</span><h2>提醒紀錄</h2></div><span class="zone-badge">非醫療診斷</span></div><div class="alert-list" id="alert-list"></div></article>
+  <aside class="card explain-card"><span class="eyebrow">RULE-BASED</span><h2>第一階段檢查項目</h2><ul class="rule-list"><li>較長時間未進入飲水區</li><li>今日進食區活動較少</li><li>長時間停留同一區域</li><li>較長時間未偵測到貓咪</li></ul><div class="info-note"><strong>需要誰處理？</strong><p>提醒交由專業照護人員查看現場、記錄與回報；AI 不做疾病判斷。</p></div></aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/alerts.js') }}?v=2"></script>{% endblock %}

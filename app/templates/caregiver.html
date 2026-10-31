@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}照護人員工作台{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">CAREGIVER OPERATIONS · ROOM A01</span><h1>今日照護工作台</h1><p>由照護人員完成現場工作，AI 同步提供客觀活動紀錄。</p></div>
+  <div class="monitor-pill"><i id="monitor-dot"></i><span id="monitor-message">讀取 AI 狀態中…</span></div>
+</section>
+
+<section class="operations-summary">
+  <article><span class="section-icon coral">🐈</span><div><small>目前入住</small><strong>Momo</strong><b>Room A01</b></div></article>
+  <article><span class="section-icon gold">✓</span><div><small>照護進度</small><strong id="task-progress">0 / 0</strong><b>今日任務</b></div></article>
+  <article><span class="section-icon lavender">♢</span><div><small>待確認提醒</small><strong id="active-alert-count">0</strong><b>活動提醒</b></div></article>
+  <article><span class="section-icon green">◎</span><div><small>AI 目前位置</small><strong id="care-zone">等待偵測</strong><b id="care-confidence">confidence —</b></div></article>
+</section>
+
+<section class="care-layout">
+  <article class="card care-task-card">
+    <div class="card-heading"><div><span class="section-icon gold">✓</span><h2>今日照護清單</h2></div><span class="zone-badge">點選即可更新</span></div>
+    <div id="care-task-list" class="care-task-list"><div class="empty-state"><span>🐾</span><p>正在讀取照護任務…</p></div></div>
+  </article>
+
+  <article class="card monitor-control-card">
+    <div class="card-heading"><div><span class="section-icon green">◎</span><h2>AI Monitor 控制</h2></div><span class="zone-badge" id="monitor-running-badge">OFFLINE</span></div>
+    <div class="monitor-preview"><img id="care-live-frame" src="/api/monitor/frame" alt="AI 即時辨識畫面" onerror="this.classList.add('is-missing')"><div><span>📷</span><p>啟動後顯示 ROI 與 Bounding Box</p></div></div>
+    <div class="monitor-form">
+      <label>影像來源<input id="monitor-source" value="data/demo.mp4" placeholder="0 或 data/my-cat.mp4"></label>
+      <label>辨識器<select id="monitor-detector"><option value="demo-color">Demo 測試影片</option><option value="yolo">YOLO 真實貓咪</option></select></label>
+      <label class="check-row"><input type="checkbox" id="save-video"> 儲存標註後影片</label>
+      <div class="button-row"><button class="primary-action" id="start-monitor">啟動監測</button><button class="danger-action" id="stop-monitor">停止</button></div>
+      <p class="inline-feedback" id="monitor-feedback"></p>
+    </div>
+  </article>
+
+  <article class="card care-log-card">
+    <div class="card-heading"><div><span class="section-icon peach">✎</span><h2>新增照護紀錄</h2></div><small>主人也能查看</small></div>
+    <form id="care-log-form" class="care-log-form">
+      <label>照護類型<select id="care-log-type"><option>餵食</option><option>換水</option><option>清理貓砂</option><option>陪玩</option><option>其他</option></select></label>
+      <label>照護留言<textarea id="care-log-note" maxlength="1000" placeholder="例如：Momo 今天比較願意出來玩了～" required></textarea></label>
+      <button class="primary-action" type="submit">儲存照護紀錄</button>
+      <p class="inline-feedback" id="care-log-feedback"></p>
+    </form>
+  </article>
+
+  <article class="card recent-care-card">
+    <div class="card-heading"><div><span class="section-icon coral">≋</span><h2>最近照護回報</h2></div><a href="/pet">查看貓咪資料</a></div>
+    <div id="care-log-list" class="care-log-list"><div class="empty-state"><span>✎</span><p>尚未建立照護紀錄。</p></div></div>
+  </article>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/caregiver.js') }}?v=3"></script>{% endblock %}

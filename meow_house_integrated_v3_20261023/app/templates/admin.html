@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}系統營運中心{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">SYSTEM OPERATIONS</span><h1>智慧照護系統營運中心</h1><p>帳號權限、照護指派、攝影機、ROI 與稽核紀錄集中管理。</p></div>
+  <span class="monitor-pill" id="admin-monitor-state"><i></i> CHECKING</span>
+</section>
+
+<section class="admin-metrics">
+  <article><small>會員帳號</small><strong id="metric-users">—</strong><span>三角色權限管理</span></article>
+  <article><small>貓咪資料</small><strong id="metric-pets">—</strong><span>寄養中照護對象</span></article>
+  <article><small>智慧貓屋</small><strong id="metric-houses">—</strong><span id="metric-occupied">— 間使用中</span></article>
+  <article><small>AI 活動紀錄</small><strong id="metric-activities">—</strong><span>可追溯區域區段</span></article>
+</section>
+
+<section class="admin-layout">
+  <article class="card system-flow-card">
+    <div class="card-heading"><div><span class="section-icon green">◎</span><h2>即時 AI 系統管線</h2></div><small id="admin-monitor-message">讀取中…</small></div>
+    <div class="pipeline-flow">
+      <div><span>01</span><strong>Camera</strong><small>USB / MP4</small></div><i>→</i>
+      <div><span>02</span><strong>YOLO11</strong><small>Cat Detect</small></div><i>→</i>
+      <div><span>03</span><strong>ROI + Debounce</strong><small>Zone Mapping</small></div><i>→</i>
+      <div><span>04</span><strong>SQLAlchemy</strong><small>Activity Log</small></div><i>→</i>
+      <div><span>05</span><strong>Dashboard</strong><small>Role Views</small></div>
+    </div>
+    <div class="system-detail-grid"><div><small>Current zone</small><strong id="admin-current-zone">—</strong></div><div><small>Processed frames</small><strong id="admin-frame-count">0</strong></div><div><small>Detector</small><strong id="admin-detector">—</strong></div><div><small>未處理提醒</small><strong id="admin-active-alerts">0</strong></div></div>
+  </article>
+
+  <article class="card device-card">
+    <div class="card-heading"><div><span class="section-icon gold">▣</span><h2>攝影機與裝置心跳</h2></div><small>30 秒內回報視為在線</small></div>
+    <div id="camera-device-list" class="device-list"></div>
+  </article>
+
+  <article class="card governance-card">
+    <div class="card-heading"><div><span class="section-icon lavender">◇</span><h2>權限界線</h2></div><span class="zone-badge">Least privilege</span></div>
+    <ul><li><b>OWNER</b><span>只看自己的貓咪、AI 紀錄與照護回報</span></li><li><b>CAREGIVER</b><span>只處理被指派貓咪的照護任務與提醒</span></li><li><b>ADMIN</b><span>管理帳號、指派、設備、ROI 與系統設定</span></li><li><b>非醫療聲明</b><span>系統只產生活動提醒，不進行疾病診斷</span></li></ul>
+  </article>
+
+  <article class="card admin-wide-card">
+    <div class="card-heading"><div><span class="section-icon coral">人</span><h2>會員與帳號生命週期</h2></div><small>密碼只儲存雜湊</small></div>
+    <form id="user-create-form" class="admin-inline-form">
+      <label>姓名<input name="name" required maxlength="80"></label>
+      <label>Email<input name="email" type="email" required></label>
+      <label>初始密碼<input name="password" type="password" minlength="8" required></label>
+      <label>角色<select name="role"><option>OWNER</option><option>CAREGIVER</option><option>ADMIN</option></select></label>
+      <button class="primary-action" type="submit">建立帳號</button>
+    </form>
+    <p class="inline-feedback" id="user-feedback"></p>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>會員</th><th>角色</th><th>狀態</th><th>操作</th></tr></thead><tbody id="user-table-body"></tbody></table></div>
+  </article>
+
+  <article class="card">
+    <div class="card-heading"><div><span class="section-icon green">✓</span><h2>照護員指派</h2></div><small>避免跨貓咪存取</small></div>
+    <form id="assignment-form" class="stack-form"><label>照護員<select id="assignment-caregiver" required></select></label><label>貓咪<select id="assignment-pet" required></select></label><label class="check-row"><input id="assignment-active" type="checkbox" checked> 啟用指派</label><button class="primary-action" type="submit">儲存指派</button></form>
+    <div id="assignment-list" class="compact-list"></div>
+  </article>
+
+  <article class="card">
+    <div class="card-heading"><div><span class="section-icon gold">⌖</span><h2>ROI 區域設定</h2></div><small>正規化座標 0–1</small></div>
+    <div id="roi-editor" class="roi-editor"></div>
+  </article>
+
+  <article class="card">
+    <div class="card-heading"><div><span class="section-icon lavender">⚙</span><h2>活動提醒門檻</h2></div><small>規則式，不是醫療診斷</small></div>
+    <form id="settings-form" class="stack-form"><label>未進入飲水區（小時）<input id="setting-water" type="number" min="0.1" step="0.1" required></label><label>同區停留過久（分鐘）<input id="setting-stay" type="number" min="1" step="1" required></label><button class="primary-action" type="submit">更新門檻</button></form>
+    <p class="inline-feedback" id="settings-feedback"></p>
+  </article>
+
+  <article class="card">
+    <div class="card-heading"><div><span class="section-icon coral">☑</span><h2>系統待辦</h2></div><small>與貓咪照護任務分開</small></div>
+    <form id="system-task-form" class="admin-add-form"><input name="title" placeholder="新增系統維運工作" required maxlength="160"><button type="submit">新增</button></form>
+    <div id="system-task-list" class="compact-list"></div>
+  </article>
+
+  <article class="card admin-wide-card">
+    <div class="card-heading"><div><span class="section-icon green">≋</span><h2>稽核紀錄</h2></div><small>敏感操作可追溯</small></div>
+    <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>時間</th><th>操作者</th><th>事件</th><th>內容</th></tr></thead><tbody id="audit-table-body"></tbody></table></div>
+  </article>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/admin.js') }}?v=3"></script>{% endblock %}

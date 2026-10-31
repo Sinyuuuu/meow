@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Meow一下 CatSense AI 智慧貓咪照護系統">
+  <title>{% block title %}Meow一下{% endblock %} · CatSense AI</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ffd9c7'/%3E%3Cpath d='M17 28 14 13l13 8c3-1 7-1 10 0l13-8-3 15c3 4 4 8 2 13-3 8-11 11-17 11S18 49 15 41c-2-5-1-9 2-13Z' fill='%23fffdfb' stroke='%23713d35' stroke-width='3'/%3E%3Ccircle cx='25' cy='34' r='2.5' fill='%23713d35'/%3E%3Ccircle cx='39' cy='34' r='2.5' fill='%23713d35'/%3E%3Cpath d='m29 40 3 2 3-2M32 42v4' fill='none' stroke='%23713d35' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}?v=5">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/catsense.css') }}?v=1">
+  {% block head %}{% endblock %}
+</head>
+<body data-role="{{ role|default('GUEST') }}" data-page="{{ page|default('') }}">
+  <div class="app-shell cs-shell">
+    <header class="cs-topbar">
+      <a class="cs-brand" href="/" aria-label="Meow一下首頁">
+        <span class="cs-brand-cat" aria-hidden="true"><i></i></span>
+        <span><strong>Meow一下</strong><small>CatSense AI 智慧貓咪照護系統</small></span>
+      </a>
+      <button class="cs-nav-toggle" type="button" aria-label="開啟導覽選單" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+      <nav class="cs-primary-nav" id="primary-nav" aria-label="主要導覽">
+        {% if role == 'OWNER' %}
+          <a class="{% if page == 'dashboard' %}active{% endif %}" href="/"><span aria-hidden="true">⌂</span>首頁</a>
+          <a class="{% if page == 'pet' %}active{% endif %}" href="/pet"><span aria-hidden="true">🐾</span>我的貓咪</a>
+          <a class="{% if page == 'healthcare' %}active{% endif %}" href="/healthcare"><span aria-hidden="true">♡</span>健康照護</a>
+          <a class="{% if page == 'analysis' %}active{% endif %}" href="/analysis"><span aria-hidden="true">▥</span>活動分析</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span aria-hidden="true">♢</span>通知<b class="cs-notification-count" id="nav-alert-count" hidden>0</b></a>
+        {% elif role == 'CAREGIVER' %}
+          <a class="{% if page == 'caregiver' %}active{% endif %}" href="/caregiver"><span>⌂</span>照護工作台</a>
+          <a class="{% if page == 'activities' %}active{% endif %}" href="/activities"><span>≋</span>AI 活動紀錄</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span>♢</span>待確認提醒</a>
+          <a class="{% if page == 'pet' %}active{% endif %}" href="/pet"><span>🐾</span>貓咪資料</a>
+        {% elif role == 'ADMIN' %}
+          <a class="{% if page == 'admin' %}active{% endif %}" href="/admin"><span>⌂</span>系統總覽</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span>♢</span>系統提醒</a>
+          <a href="/docs" target="_blank" rel="noopener"><span>↗</span>API 文件</a>
+        {% endif %}
+      </nav>
+      <div class="cs-member">
+        <button class="cs-member-trigger" id="member-menu-trigger" type="button" aria-expanded="false" aria-controls="member-menu">
+          <span class="cs-avatar" aria-hidden="true">{{ member_name[:1] }}</span>
+          <span><small>Hello,</small><strong>{{ member_name }}</strong></span><b aria-hidden="true">⌄</b>
+        </button>
+        <div class="cs-member-menu" id="member-menu" hidden>
+          <span>{{ role_label }}</span>
+          {% if role == 'CAREGIVER' %}<a href="/caregiver">照護工作台</a>{% endif %}
+          {% if role == 'ADMIN' %}<a href="/admin">系統管理</a>{% endif %}
+          <form method="post" action="/logout"><button type="submit">登出</button></form>
+        </div>
+      </div>
+    </header>
+    <main class="content cs-content">{% block content %}{% endblock %}</main>
+    <div class="cs-toast" id="global-toast" role="status" aria-live="polite" hidden></div>
+  </div>
+  <script src="{{ url_for('static', path='js/common.js') }}?v=1"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

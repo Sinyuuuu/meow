@@ -1,0 +1,51 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "啟動 Meow一下網站",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.main:app",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload"
+      ],
+      "jinja": true,
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "執行 YOLO Webcam",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}\\scripts\\run_monitor.py",
+      "args": [
+        "--source",
+        "0",
+        "--detector",
+        "yolo",
+        "--display"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "執行內建 AI Demo",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}\\scripts\\run_monitor.py",
+      "args": [
+        "--source",
+        "data\\demo.mp4",
+        "--detector",
+        "demo-color"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}

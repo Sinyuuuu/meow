@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}我的貓咪{% endblock %}
+{% block content %}
+<section class="cs-page-title"><div><span class="cs-title-icon">🐾</span><div><span class="eyebrow">MY CAT · DAILY CARE</span><h1>我的貓咪</h1><p>今天的客觀活動、重量資訊與真人照護回報，都集中在這裡。</p></div></div><label class="cs-date-field">查看日期<input type="date" id="pet-day"></label></section>
+
+<div class="cs-tabs" role="tablist" aria-label="我的貓咪內容">
+  <button class="active" type="button" role="tab" aria-selected="true" data-tab="overview">今日總覽</button>
+  <button type="button" role="tab" aria-selected="false" data-tab="records">每日紀錄</button>
+  <button type="button" role="tab" aria-selected="false" data-tab="daily-analysis">每日分析</button>
+  <a href="/analysis">查看長期趨勢 ↗</a>
+</div>
+
+<section class="cs-pet-layout" data-panel="overview">
+  <aside class="cs-pet-left">
+    <article class="cs-card cs-pet-profile-card">
+      <span class="eyebrow">MY CAT</span>
+      <button class="cs-pet-photo-button" id="pet-photo-button" type="button" aria-label="更換貓咪照片">
+        <img id="pet-photo" alt="貓咪照片" hidden><span id="pet-photo-fallback">🐱</span><b>📷</b>
+      </button>
+      <input type="file" id="pet-photo-input" accept="image/jpeg,image/png,image/webp" hidden>
+      <h2><span id="pet-name">讀取中…</span> <small id="pet-gender"></small></h2>
+      <p id="pet-summary">正在讀取基本資料</p>
+      <button class="cs-secondary-button" id="edit-pet" type="button">✎ 編輯基本資料</button>
+    </article>
+    <article class="cs-card cs-pet-info-card">
+      <header class="cs-card-head"><div><span class="cs-icon coral">☷</span><div><h2>基本資料</h2><p>由主人維護</p></div></div></header>
+      <dl class="cs-info-list"><div><dt>年齡</dt><dd id="pet-age">尚未填寫</dd></div><div><dt>體重</dt><dd id="pet-weight">尚未填寫</dd></div><div><dt>品種</dt><dd id="pet-breed">尚未填寫</dd></div><div><dt>個性</dt><dd id="pet-personality">尚未填寫</dd></div></dl>
+    </article>
+  </aside>
+
+  <div class="cs-pet-center">
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon peach">⌖</span><div><h2>今日區域摘要</h2><p id="zone-basis">依完成的 AI 區域區段計算</p></div></div></header>
+      <div class="cs-zone-summary" id="pet-zone-summary"><div class="cs-empty compact">正在讀取活動資料…</div></div>
+    </article>
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon mint">≋</span><div><h2>今日照護摘要</h2><p>AI 客觀資料與真人回報分開呈現</p></div></div></header>
+      <div class="cs-care-summary" id="daily-care-summary"><div class="cs-empty compact">正在整理今日資料…</div></div>
+    </article>
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon peach">♡</span><div><h2>照護提醒</h2><p>最近需要留意的主人行程</p></div></div><a href="/healthcare">前往健康照護 ›</a></header>
+      <div id="pet-reminder-preview" class="cs-mini-list"><div class="cs-empty compact">讀取提醒中…</div></div>
+    </article>
+  </div>
+
+  <aside class="cs-pet-right">
+    <article class="cs-card cs-weight-now-card">
+      <header class="cs-card-head"><div><span class="cs-icon gold">▰</span><div><h2>食碗重量</h2><p id="weight-device-status">正在確認感測器</p></div></div></header>
+      <div class="cs-weight-reading"><span>目前量測</span><strong id="current-bowl-weight">—</strong><small id="current-bowl-time">尚無量測資料</small></div>
+      <p class="cs-data-note" id="weight-disclaimer">重量下降僅列為候選事件，需搭配其他活動證據確認。</p>
+    </article>
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon coral">▥</span><div><h2>食碗重量變化</h2><p>單位：g</p></div></div></header>
+      <div class="cs-line-chart" id="weight-chart"><div class="cs-empty"><span>▥</span><p>正在讀取量測資料…</p></div></div>
+    </article>
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon blue">✎</span><div><h2>照護人員留言</h2><p>真人照護回報</p></div></div></header>
+      <div id="owner-care-logs" class="cs-mini-list"><div class="cs-empty compact">目前尚無照護留言。</div></div>
+    </article>
+  </aside>
+</section>
+
+<section class="cs-tab-panel" data-panel="records" hidden>
+  <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon coral">≋</span><div><h2>每日活動時間軸</h2><p>點擊事件可展開詳細時間與停留資訊</p></div></div></header><div class="cs-daily-timeline" id="pet-daily-records"></div></article>
+</section>
+<section class="cs-tab-panel" data-panel="daily-analysis" hidden>
+  <div class="cs-daily-analysis-grid"><article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon peach">◔</span><div><h2>當日區域比例</h2><p>僅計算有完成時間的區段</p></div></div></header><div id="daily-donut" class="cs-donut-wrap"></div></article><article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon mint">☀</span><div><h2>當日觀察摘要</h2><p>可解釋規則，不做醫療診斷</p></div></div></header><div id="daily-observations" class="cs-observation-list"></div></article></div>
+</section>
+
+<dialog class="cs-dialog" id="pet-edit-dialog">
+  <form method="dialog" id="pet-edit-form"><header><div><span class="eyebrow">EDIT PROFILE</span><h2>編輯貓咪資料</h2></div><button value="cancel" aria-label="關閉">×</button></header><div class="cs-form-grid"><label>名字<input name="name" required maxlength="80"></label><label>性別<input name="gender" maxlength="20"></label><label>年齡<input name="age" type="number" min="0" max="40"></label><label>品種<input name="breed" maxlength="80"></label><label>體重（kg）<input name="weight" type="number" min="0.1" max="40" step="0.1"></label><label class="wide">個性<textarea name="personality" maxlength="1000"></textarea></label><label class="wide">飲食備註<textarea name="food_notes" maxlength="2000"></textarea></label><label class="wide">照護備註<textarea name="care_notes" maxlength="2000"></textarea></label><label class="wide">主人提供的醫療備註<textarea name="medical_notes" maxlength="2000"></textarea></label></div><footer><button value="cancel" class="cs-secondary-button">取消</button><button type="submit" value="default" class="cs-primary-button">儲存資料</button></footer></form>
+</dialog>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/pet.js') }}?v=4"></script>{% endblock %}

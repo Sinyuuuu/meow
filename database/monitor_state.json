@@ -1,0 +1,19 @@
+{
+  "running": false,
+  "source": "C:\\Users\\sinyu\\OneDrive\\桌面\\meow_house_integrated_v3_20261023\\data\\lesson1_cat.mp4",
+  "detector": "yolo",
+  "pet_id": 1,
+  "pet_name": "Momo",
+  "detected": false,
+  "missing_seconds": 0.0,
+  "confidence": null,
+  "inference_ms": null,
+  "zone_point_mode": "center",
+  "current_zone": null,
+  "current_zone_label": "等待偵測",
+  "candidate_zone": null,
+  "last_seen_at": null,
+  "frame_count": 0,
+  "message": "監測啟動失敗：[WinError 5] 存取被拒。: 'C:\\\\Users\\\\sinyu\\\\OneDrive\\\\桌面\\\\meow_house_integrated_v3_20261023\\\\database\\\\monitor_state.tmp' -> 'C:\\\\Users\\\\sinyu\\\\OneDrive\\\\桌面\\\\meow_house_integrated_v3_20261023\\\\database\\\\monitor_state.json'",
+  "updated_at": "2026-10-23T09:32:37.555225+00:00"
+}

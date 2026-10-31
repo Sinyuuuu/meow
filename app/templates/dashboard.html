@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}智慧貓屋監控中心{% endblock %}
+{% block content %}
+<section class="cs-welcome-banner">
+  <span class="cs-sr-only">Momo 的今日照護</span>
+  <div class="cs-welcome-cat" aria-hidden="true">🐱</div>
+  <div><span class="eyebrow">CAT HOUSE A01</span><h1>嗨，主人！今天也來看看 <span id="welcome-pet-name">Momo</span> 吧 <b>♥</b></h1><p>真人細心照護，AI 客觀記錄每一段貓屋日常。</p></div>
+  <div class="cs-live-state" id="welcome-monitor-state"><i></i><span>讀取 AI 狀態中…</span></div>
+</section>
+
+<section class="cs-home-grid">
+  <div class="cs-home-main">
+    <article class="cs-card cs-camera-card">
+      <header class="cs-card-head">
+        <div><span class="cs-icon coral">▣</span><div><h2>即時影像 <span class="cs-live-badge" id="live-badge">OFFLINE</span></h2><p>智慧貓屋 AI 即時監看</p></div></div>
+        <button class="cs-icon-button" id="camera-fullscreen" type="button" aria-label="放大即時影像">⛶</button>
+      </header>
+      <div class="cs-portrait-camera" id="camera-stage">
+        <div class="cs-camera-side cs-camera-left"><span>AI 狀態</span><strong id="camera-ai-state">待連線</strong><small id="confidence">目前未偵測到 cat</small></div>
+        <div class="cs-camera-frame">
+          <img id="live-frame" src="/api/monitor/frame" alt="Momo 智慧貓屋 AI 即時影像" onerror="this.classList.add('is-missing')">
+          <div class="cs-camera-empty"><span>🐾</span><strong>等待攝影機畫面</strong><small>監控離線時不會顯示假 LIVE 畫面</small></div>
+          <div class="cs-camera-overlay"><span id="live-zone">等待辨識</span><time id="frame-updated">尚未更新</time></div>
+        </div>
+        <div class="cs-camera-side cs-camera-right"><span>辨識資訊</span><strong id="frame-count">Frame 0</strong><small id="monitor-detail">正在確認串流狀態</small></div>
+      </div>
+    </article>
+
+    <article class="cs-card cs-zone-map-card">
+      <header class="cs-card-head"><div><span class="cs-icon peach">⌖</span><div><h2>智慧貓屋區域地圖</h2><p>依 AI 最新有效辨識顯示位置</p></div></div><span class="cs-status-chip" id="map-status">等待辨識</span></header>
+      <div class="cs-house-map" id="house-map" data-zone="">
+        <button class="cs-map-zone water" type="button" data-zone="WATER"><span>●</span><strong>飲水區</strong><small id="water-last">尚無事件</small></button>
+        <button class="cs-map-zone food" type="button" data-zone="FOOD"><span>▰</span><strong>進食區</strong><small id="food-last">尚無事件</small></button>
+        <button class="cs-map-zone litter" type="button" data-zone="LITTER"><span>◇</span><strong>貓砂區</strong><small id="litter-last">尚無事件</small></button>
+        <div class="cs-momo-marker" id="momo-marker" hidden><span>🐈</span><small>Momo</small></div>
+      </div>
+      <p class="cs-data-note" id="zone-map-note">進入區域僅代表影像位置，不等同實際進食或飲水。</p>
+    </article>
+  </div>
+
+  <aside class="cs-home-aside">
+    <article class="cs-card">
+      <header class="cs-card-head"><div><span class="cs-icon coral">▥</span><div><h2>主畫面小總覽</h2><p>即時系統狀態</p></div></div></header>
+      <div class="cs-overview-grid">
+        <div class="cs-overview-tile green"><span>◎</span><small>AI 狀態</small><strong id="overview-ai">確認中</strong></div>
+        <div class="cs-overview-tile peach"><span>⌖</span><small>目前所在</small><strong id="overview-zone">等待辨識</strong></div>
+        <div class="cs-overview-tile blue"><span>◷</span><small>最後偵測</small><strong id="overview-last">尚無</strong></div>
+        <div class="cs-overview-tile pink"><span>♢</span><small>待處理提醒</small><strong id="overview-alerts">—</strong></div>
+      </div>
+    </article>
+
+    <article class="cs-card cs-device-card">
+      <header class="cs-card-head"><div><span class="cs-icon mint">⌁</span><div><h2>設備狀態</h2><p>真實連線與最後回報</p></div></div></header>
+      <div class="cs-device-list" id="owner-device-list"><div class="cs-empty compact">正在讀取設備…</div></div>
+    </article>
+
+    <article class="cs-card cs-events-card">
+      <header class="cs-card-head"><div><span class="cs-icon peach">♢</span><div><h2>最新通知與事件</h2><p>最近 6 筆重要動態</p></div></div><a href="/alerts">查看全部 ›</a></header>
+      <div class="cs-event-list" id="notice-list"><div class="cs-empty"><span>🐾</span><p>正在讀取貓屋動態…</p></div></div>
+    </article>
+  </aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/dashboard.js') }}?v=5"></script>{% endblock %}
