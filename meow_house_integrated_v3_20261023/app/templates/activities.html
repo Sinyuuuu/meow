@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}活動紀錄{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">MOMO'S ACTIVITY</span><h1>活動紀錄</h1><p>AI 依據 Momo 進入智慧貓屋各區域的時間，自動整理活動足跡。</p></div>
+  <label class="date-control">查看日期<input type="date" id="activity-date"></label>
+</section>
+<section class="two-column-page">
+  <article class="card timeline-card">
+    <div class="card-heading"><div><span class="section-icon gold">≋</span><h2>區域 Timeline</h2></div><span class="zone-badge" id="record-count">0 筆</span></div>
+    <div class="timeline" id="activity-timeline"><div class="empty-state"><span>🐾</span><p>這天還沒有 AI 活動紀錄。</p></div></div>
+  </article>
+  <aside class="card explain-card">
+    <span class="eyebrow">HOW IT WORKS</span><h2>這筆紀錄怎麼來的？</h2>
+    <ol><li><span>1</span>YOLO 偵測到畫面中的貓咪</li><li><span>2</span>Bounding Box 中心點落入 ROI</li><li><span>3</span>連續穩定達到門檻後才切換區域</li><li><span>4</span>系統結束上一段並計算停留時間</li></ol>
+    <div class="info-note"><strong>判讀界線</strong><p>「進入進食區」只代表 Momo 出現在該區，不代表已完成進食。</p></div>
+  </aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/activities.js') }}?v=2"></script>{% endblock %}

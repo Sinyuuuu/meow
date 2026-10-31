@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}區域分析{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">ZONE INSIGHTS</span><h1>今日區域分析</h1><p>用簡單、可解釋的停留時間，了解 Momo 今天常待在哪裡。</p></div><span class="monitor-pill"><i></i> 今日資料</span></section>
+<section class="analysis-layout">
+  <article class="card chart-card"><div class="card-heading"><div><span class="section-icon green">▥</span><h2>各區停留時間</h2></div><small>完成區段加總</small></div><div class="bar-chart" id="bar-chart"></div></article>
+  <article class="card insight-card"><span class="eyebrow">TODAY AT A GLANCE</span><h2 id="top-zone-title">等待活動資料</h2><p id="top-zone-copy">啟動 AI Monitor 後，這裡會整理 Momo 停留最久的區域。</p><div class="legend" id="analysis-legend"></div><div class="info-note"><strong>僅供照護參考</strong><p>分析反映畫面中的區域活動，不是健康或疾病診斷。</p></div></article>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/analysis.js') }}?v=3"></script>{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}活動分析{% endblock %}
+{% block content %}
+<section class="cs-analysis-hero">
+  <div><span class="cs-title-icon">▥</span><div><span class="eyebrow">BEHAVIOR INSIGHTS</span><h1>活動分析</h1><p>從真實 ROI 活動紀錄了解生活習慣與跨日變化，不進行健康診斷。</p></div></div>
+  <div class="cs-range-controls"><div class="cs-segmented"><button class="active" type="button" data-days="7">近 7 天</button><button type="button" data-days="30">近 30 天</button><button type="button" data-days="custom">自訂</button></div><div class="cs-custom-range" id="custom-range" hidden><input type="date" id="analysis-start" aria-label="開始日期"><span>至</span><input type="date" id="analysis-end" aria-label="結束日期"><button type="button" id="apply-range">套用</button></div></div>
+</section>
+
+<div class="cs-analysis-status" id="analysis-status" role="status">正在讀取活動資料…</div>
+<section class="cs-analysis-summary" id="analysis-summary"></section>
+
+<section class="cs-analysis-main-grid">
+  <article class="cs-card">
+    <header class="cs-card-head"><div><span class="cs-icon coral">▥</span><div><h2>區域活動趨勢</h2><p id="trend-unit">每日有效停留時間</p></div></div></header>
+    <div class="cs-stacked-chart" id="activity-trend"></div>
+  </article>
+  <article class="cs-card">
+    <header class="cs-card-head"><div><span class="cs-icon peach">◷</span><div><h2>24 小時活動熱度</h2><p>每格為該日期／時段的區域進入事件數</p></div></div></header>
+    <div class="cs-heatmap" id="activity-heatmap"></div>
+  </article>
+</section>
+
+<section class="cs-analysis-bottom-grid">
+  <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon gold">◔</span><div><h2 id="ratio-title">區域使用比例</h2><p>依有效資料來源計算</p></div></div></header><div class="cs-ratio-panel" id="zone-ratio"></div></article>
+  <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon blue">🐾</span><div><h2>常見移動路徑</h2><p>排除連續相同區域</p></div></div></header><div class="cs-path-list" id="movement-paths"></div></article>
+  <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon peach">☀</span><div><h2>AI 行為觀察</h2><p>可解釋統計提示</p></div></div></header><div class="cs-observation-list" id="behavior-observations"></div></article>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/analysis.js') }}?v=5"></script>{% endblock %}

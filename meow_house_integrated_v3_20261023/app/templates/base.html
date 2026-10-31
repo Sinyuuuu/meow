@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Meow一下智慧貓咪寄養照護平台">
+  <title>{% block title %}Meow一下{% endblock %} · 智慧貓屋</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f7c97e'/%3E%3Cpath d='M17 28 14 13l13 8c3-1 7-1 10 0l13-8-3 15c3 4 4 8 2 13-3 8-11 11-17 11S18 49 15 41c-2-5-1-9 2-13Z' fill='%23fff8ec' stroke='%236f4c36' stroke-width='3'/%3E%3Ccircle cx='25' cy='34' r='2.5' fill='%236f4c36'/%3E%3Ccircle cx='39' cy='34' r='2.5' fill='%236f4c36'/%3E%3Cpath d='m29 40 3 2 3-2M32 42v4' fill='none' stroke='%236f4c36' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}?v=4">
+  {% block head %}{% endblock %}
+</head>
+<body data-role="{{ role|default('GUEST') }}">
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Meow一下首頁">
+        <span class="brand-mark" aria-hidden="true">⌂</span>
+        <span><strong>Meow一下</strong><small>智慧貓咪寄養照護平台</small></span>
+      </a>
+      <p class="greeting">
+        {% if role == 'CAREGIVER' %}今日照護中心 · <strong>真人照護、AI 記錄</strong>
+        {% elif role == 'ADMIN' %}系統營運中心 · <strong>服務與設備總覽</strong>
+        {% else %}嗨，主人！今天也來看看 <strong>Momo</strong> 吧 <span aria-hidden="true">♥</span>{% endif %}
+      </p>
+      <div class="member">
+        <span class="avatar" aria-hidden="true">花</span>
+        <span><strong>{{ member_name }}</strong><small>{{ role_label }}</small></span>
+        <form method="post" action="/logout"><button class="text-button" type="submit">登出</button></form>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="sidebar" aria-label="主要導覽">
+        {% if role == 'CAREGIVER' %}
+          <a class="{% if page == 'caregiver' %}active{% endif %}" href="/caregiver"><span>⌂</span>照護工作台</a>
+          <a class="{% if page == 'activities' %}active{% endif %}" href="/activities"><span>≋</span>AI 活動紀錄</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span>♢</span>待確認提醒</a>
+          <a class="{% if page == 'pet' %}active{% endif %}" href="/pet"><span>🐾</span>貓咪照護資料</a>
+        {% elif role == 'ADMIN' %}
+          <a class="{% if page == 'admin' %}active{% endif %}" href="/admin"><span>⌂</span>系統總覽</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span>♢</span>系統提醒</a>
+          <a href="/docs" target="_blank"><span>↗</span>API 文件</a>
+        {% else %}
+          <a class="{% if page == 'dashboard' %}active{% endif %}" href="/"><span>⌂</span>照護總覽</a>
+          <a class="{% if page == 'activities' %}active{% endif %}" href="/activities"><span>≋</span>活動紀錄</a>
+          <a class="{% if page == 'analysis' %}active{% endif %}" href="/analysis"><span>◔</span>區域分析</a>
+          <a class="{% if page == 'alerts' %}active{% endif %}" href="/alerts"><span>♢</span>異常提醒</a>
+          <a class="{% if page == 'pet' %}active{% endif %}" href="/pet"><span>🐾</span>貓咪資料</a>
+        {% endif %}
+        <div class="room-card">
+          <span class="room-cat">🐈</span>
+          <small>目前入住</small>
+          <strong>Momo · A01</strong>
+          <span class="soft-status"><i></i> AI 監測可用</span>
+        </div>
+        <p class="care-note">真人照護 × AI 客觀記錄<br>本系統不提供醫療診斷</p>
+      </nav>
+
+      <main class="content">{% block content %}{% endblock %}</main>
+    </div>
+  </div>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

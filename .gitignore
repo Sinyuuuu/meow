@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+
+hardware/**/secrets.h
+tests/.tmp/
+*.db-wal
+*.db-shm    
+.venv/
+data/
+outputs/
+work/
+__pycache__/
+*.py[cod]

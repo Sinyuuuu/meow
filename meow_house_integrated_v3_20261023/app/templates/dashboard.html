@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Momo 照護總覽{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><span class="eyebrow">BOARDING DAY 3 · ROOM A01</span><h1>Momo 的今日照護</h1></div>
+  <div class="monitor-pill"><i id="monitor-dot"></i><span id="monitor-message">讀取 AI 狀態中…</span></div>
+</section>
+
+<section class="dashboard-grid">
+  <article class="card live-card">
+    <div class="card-heading"><div><span class="live-badge"><i></i> LIVE</span><h2>智慧貓屋即時影像</h2></div><span class="zone-badge" id="live-zone">等待偵測</span></div>
+    <div class="camera-stage" id="camera-stage">
+      <img id="live-frame" src="/api/monitor/frame" alt="Momo 智慧貓屋 AI 即時影像" onerror="this.classList.add('is-missing')">
+      <div class="camera-empty"><span>🐈</span><strong>等待攝影機畫面</strong><small>啟動 AI Monitor 後會在這裡顯示 Bounding Box 與 ROI</small></div>
+      <div class="camera-meta"><span id="confidence">Cat confidence —</span><span id="frame-count">Frame 0</span></div>
+    </div>
+  </article>
+
+  <article class="card summary-card">
+    <div class="card-heading"><div><span class="section-icon peach">✦</span><h2>今日總覽</h2></div><small>AI 區域進入紀錄</small></div>
+    <div class="summary-grid">
+      <div class="stat food"><span class="stat-icon">▰</span><div><small>進食區</small><strong><b id="food-count">0</b> 次</strong></div></div>
+      <div class="stat water"><span class="stat-icon">●</span><div><small>飲水區</small><strong><b id="water-count">0</b> 次</strong></div></div>
+      <div class="stat litter"><span class="stat-icon">◇</span><div><small>貓砂區</small><strong><b id="litter-count">0</b> 次</strong></div></div>
+      <div class="stat activity"><span class="stat-icon">♥</span><div><small>活動狀態</small><strong id="activity-status">等待資料</strong></div></div>
+    </div>
+    <p class="data-footnote">次數代表「進入該區域」，不等同實際進食或飲水次數。</p>
+  </article>
+
+  <article class="card map-card">
+    <div class="card-heading"><div><span class="section-icon coral">⌖</span><h2>智慧貓屋區域地圖</h2></div><small>AI 即時位置</small></div>
+    <div class="house-map" id="house-map" data-zone="">
+      <div class="map-zone water"><span>●</span><strong>飲水區</strong><small>WATER</small></div>
+      <div class="map-zone food"><span>▰</span><strong>進食區</strong><small>FOOD</small></div>
+      <div class="map-zone litter"><span>◇</span><strong>貓砂區</strong><small>LITTER</small></div>
+      <div class="momo-marker" id="momo-marker"><span>🐈</span><small>Momo</small></div>
+    </div>
+  </article>
+
+  <article class="card notice-card">
+    <div class="card-heading"><div><span class="section-icon gold">♢</span><h2>最新通知</h2></div><a href="/activities">查看全部</a></div>
+    <div class="notice-list" id="notice-list">
+      <div class="empty-state"><span>🐾</span><p>AI 開始記錄後，最新足跡會出現在這裡。</p></div>
+    </div>
+  </article>
+</section>
+
+<section class="quick-grid" aria-label="快捷入口">
+  <a href="#camera-stage" class="quick coral"><span>▣</span><div><strong>即時影像</strong><small>查看 A01 攝影機</small></div><b>→</b></a>
+  <a href="/activities" class="quick gold"><span>≋</span><div><strong>活動紀錄</strong><small>回看今日足跡</small></div><b>→</b></a>
+  <a href="/analysis" class="quick green"><span>◔</span><div><strong>區域分析</strong><small>了解停留分布</small></div><b>→</b></a>
+  <a href="/alerts" class="quick lavender"><span>♢</span><div><strong>異常提醒</strong><small>需要確認的事項</small></div><b>→</b></a>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/dashboard.js') }}?v=3"></script>{% endblock %}

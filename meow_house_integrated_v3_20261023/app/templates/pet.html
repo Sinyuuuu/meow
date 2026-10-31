@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Momo 照護資料{% endblock %}
+{% block content %}
+<section class="page-heading"><div><span class="eyebrow">PET CARE PROFILE</span><h1>Momo 的照護資料</h1><p>飼主提供給專業照護人員的寄養資訊；醫療備註僅供人工參考。</p></div><span class="zone-badge">Room A01</span></section>
+<section class="pet-profile-layout">
+  <article class="card pet-identity"><div class="pet-avatar">🐈</div><span class="eyebrow">CURRENT BOARDING PET</span><h2>Momo</h2><p id="pet-basic">讀取資料中…</p><div class="pet-tags"><span>單貓智慧貓屋</span><span>AI Monitor</span><span>真人照護</span></div></article>
+  <article class="card pet-notes"><div class="card-heading"><div><span class="section-icon gold">▰</span><h2>飲食與個性</h2></div></div><dl><dt>個性</dt><dd id="pet-personality">—</dd><dt>飲食備註</dt><dd id="pet-food">—</dd></dl></article>
+  <article class="card pet-notes"><div class="card-heading"><div><span class="section-icon green">✓</span><h2>照護注意事項</h2></div></div><dl><dt>照護方式</dt><dd id="pet-care">—</dd><dt>飼主醫療備註</dt><dd id="pet-medical">—</dd></dl><p class="data-footnote">AI 不會根據這些資料進行疾病或醫療診斷。</p></article>
+  <article class="card owner-care-log"><div class="card-heading"><div><span class="section-icon coral">✎</span><h2>照護人員最近留言</h2></div><small>真人回報</small></div><div id="owner-care-logs" class="care-log-list"><div class="empty-state"><span>✎</span><p>目前尚無照護留言。</p></div></div></article>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/pet.js') }}?v=1"></script>{% endblock %}

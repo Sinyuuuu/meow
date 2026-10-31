@@ -1,0 +1,2 @@
+"""Meow House application package."""
+

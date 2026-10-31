@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}健康照護{% endblock %}
+{% block content %}
+<section class="cs-health-hero"><div class="cs-mini-pet"><div class="cs-mini-photo"><img id="health-pet-photo" alt="貓咪照片" hidden><span id="health-pet-fallback">🐱</span></div><div><span class="eyebrow">HEALTH & CARE</span><h1><span id="health-pet-name">我的貓咪</span> 的健康照護</h1><p id="health-pet-summary">定期安排、主動記錄，由主人與照護者共同守護。</p></div></div><div class="cs-health-note">♡ <span>提醒僅供行程管理，不提供醫療診斷。</span></div></section>
+
+<div class="cs-schema-notice" id="health-schema-notice" hidden><strong>照護行事曆尚待啟用</strong><p>頁面已完成，但正式 Supabase 尚未套用 <code>care_reminders</code> migration。現有資料不會被修改。</p></div>
+
+<section class="cs-health-grid">
+  <article class="cs-card cs-calendar-card">
+    <header class="cs-card-head cs-calendar-head"><div><span class="cs-icon coral">▣</span><div><h2>照護行事曆</h2><p>點選日期查看當天事項</p></div></div><div class="cs-calendar-nav"><button type="button" id="calendar-today">今天</button><button type="button" id="calendar-prev" aria-label="上個月">‹</button><strong id="calendar-title">—</strong><button type="button" id="calendar-next" aria-label="下個月">›</button></div></header>
+    <div class="cs-calendar-week"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+    <div class="cs-calendar" id="care-calendar"></div>
+    <div class="cs-selected-day"><h3 id="selected-day-title">今日事項</h3><div id="selected-day-events" class="cs-mini-list"></div></div>
+  </article>
+
+  <article class="cs-card cs-reminder-form-card">
+    <header class="cs-card-head"><div><span class="cs-icon coral">＋</span><div><h2 id="reminder-form-title">新增照護事項</h2><p>日期由主人或獸醫決定</p></div></div></header>
+    <form id="reminder-form" class="cs-stacked-form">
+      <input type="hidden" name="reminder_id">
+      <label>所屬貓咪<select name="pet_id" id="reminder-pet"><option value="1">目前貓咪</option></select></label>
+      <label>照護類別<select name="category"><option value="DEWORMING">驅蟲</option><option value="BATH">洗澡</option><option value="VACCINE">疫苗</option><option value="FOLLOW_UP">回診</option><option value="CHECKUP">健康檢查</option><option value="WEIGHT">體重測量</option><option value="OTHER">其他</option></select></label>
+      <label>事項名稱<input name="title" required maxlength="120" placeholder="例如：例行健康檢查"></label>
+      <div class="cs-form-split"><label>日期<input name="date" type="date" required></label><label>時間<input name="time" type="time"></label></div>
+      <label>重複週期<select name="recurrence"><option value="NONE">不重複</option><option value="WEEKLY">每週</option><option value="MONTHLY">每月</option></select></label>
+      <label>提前提醒<select name="advance_minutes"><option value="">不設定</option><option value="60">1 小時前</option><option value="1440">1 天前</option><option value="4320">3 天前</option><option value="10080">7 天前</option></select></label>
+      <label>備註（選填）<textarea name="note" maxlength="2000" placeholder="可記錄用品、獸醫交代或其他注意事項"></textarea></label>
+      <div class="cs-form-actions"><button class="cs-secondary-button" id="cancel-reminder-edit" type="button" hidden>取消編輯</button><button class="cs-primary-button" type="submit">＋ 儲存提醒</button></div>
+      <p class="cs-inline-feedback" id="reminder-feedback" role="status"></p>
+    </form>
+  </article>
+
+  <aside class="cs-health-side">
+    <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon gold">♢</span><div><h2>即將到來的提醒</h2><p>未完成的最近事項</p></div></div></header><div class="cs-mini-list" id="upcoming-reminders"></div></article>
+    <article class="cs-card"><header class="cs-card-head"><div><span class="cs-icon mint">✓</span><div><h2>本月照護事項</h2><p>可快速標記完成</p></div></div></header><div class="cs-mini-list" id="monthly-reminders"></div></article>
+  </aside>
+</section>
+
+<section class="cs-health-records">
+  <div class="cs-section-heading"><span class="cs-title-icon">▥</span><div><h2>健康紀錄</h2><p>沿用現有貓咪資料；尚未建立的歷史紀錄會顯示空狀態。</p></div></div>
+  <div class="cs-health-record-grid">
+    <article class="cs-card"><span class="cs-icon coral">⚖</span><h3>貓咪體重</h3><strong id="health-pet-weight">尚無資料</strong><p>這是貓咪體重（kg），不與食碗重量混用。</p></article>
+    <article class="cs-card"><span class="cs-icon peach">⌁</span><h3>疫苗紀錄</h3><p>目前資料模型尚無疫苗歷史；可先用照護提醒安排下次日期。</p></article>
+    <article class="cs-card"><span class="cs-icon lavender">✦</span><h3>驅蟲紀錄</h3><p>目前資料模型尚無驅蟲歷史；不會由系統自行推定週期。</p></article>
+    <article class="cs-card"><span class="cs-icon blue">♨</span><h3>洗澡紀錄</h3><p>建立並完成「洗澡」提醒後可保留行程紀錄。</p></article>
+    <article class="cs-card"><span class="cs-icon mint">✎</span><h3>主人健康備註</h3><p id="health-medical-notes">尚未填寫</p></article>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/healthcare.js') }}?v=1"></script>{% endblock %}
